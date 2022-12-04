@@ -1,0 +1,49 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://player/player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://image/backgroundColor1.png" type="Texture" id=2]
+[ext_resource path="res://image/starBig.png" type="Texture" id=3]
+[ext_resource path="res://enemy/Spawner.gd" type="Script" id=4]
+[ext_resource path="res://HUD/HUD.tscn" type="PackedScene" id=5]
+
+[node name="Gameplay" type="Node"]
+
+[node name="background" type="Sprite" parent="."]
+scale = Vector2( 8.52, 5.1 )
+z_index = -100
+texture = ExtResource( 2 )
+centered = false
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="background"]
+position = Vector2( 140.962, 68.6274 )
+amount = 37
+lifetime = 4.5
+texture = ExtResource( 3 )
+emission_shape = 2
+emission_rect_extents = Vector2( 0, 80 )
+direction = Vector2( -1, 0 )
+spread = 0.0
+gravity = Vector2( 0, 0 )
+initial_velocity = 35.0
+initial_velocity_random = 0.46
+scale_amount = 0.1
+scale_amount_random = 0.21
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HUD" parent="CanvasLayer" instance=ExtResource( 5 )]
+
+[node name="player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 117, 258 )
+rotation = 1.57441
+z_index = 100
+
+[node name="Spawner" type="Node2D" parent="."]
+position = Vector2( 1312, 353 )
+script = ExtResource( 4 )
+
+[node name="spawnTimer" type="Timer" parent="Spawner"]
+one_shot = true
+
+[connection signal="timeout" from="Spawner/spawnTimer" to="CanvasLayer/HUD" method="_on_spawnTimer_timeout"]
+[connection signal="timeout" from="Spawner/spawnTimer" to="Spawner" method="_on_spawnTimer_timeout"]
